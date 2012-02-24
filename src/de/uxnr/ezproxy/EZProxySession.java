@@ -19,12 +19,12 @@ public class EZProxySession {
 	private URL location;
 	private int port;
 
-	protected void launch() throws Exception {
+	protected void begin() throws Exception {
 		load();
 		login();
 	}
 
-	protected void finalize() throws Exception {
+	protected void end() throws Exception {
 		logout();
 	}
 
