@@ -24,11 +24,13 @@ public class EZProxy {
 
 		try {
 			EZProxySession session = new EZProxySession();
-			EZProxyRewriter.setSession(session);
 			session.begin();
 
+			EZProxyRewriter rewriter = new EZProxyRewriter();
+			rewriter.setSession(session);
+
 			Proxy proxy = new Proxy(session.getPort());
-			proxy.addHostRewriter(".*", new EZProxyRewriter());
+			proxy.addHostRewriter(".*", rewriter);
 			proxy.start();
 
 			JOptionPane.showMessageDialog(null,

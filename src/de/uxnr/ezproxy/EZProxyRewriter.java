@@ -6,21 +6,21 @@ import de.uxnr.proxy.Headers;
 import de.uxnr.proxy.HostRewriter;
 
 public class EZProxyRewriter implements HostRewriter {
-	private static EZProxySession session;
+	private EZProxySession session;
 
-	public static void setSession(EZProxySession session) {
-		EZProxyRewriter.session = session;
+	public synchronized void setSession(EZProxySession session) {
+		this.session = session;
 	}
 
 	@Override
-	public void rewriteRequest(StringBuilder requestMethod,
+	public synchronized void rewriteRequest(StringBuilder requestMethod,
 			StringBuilder requestURI, Headers requestHeaders)
 			throws IOException {
 
-		if (EZProxyRewriter.session != null) {
+		if (this.session != null) {
 			String url = requestURI.toString();
-			String domain = session.getDomain();
-			String cookie = session.getCookie();
+			String domain = this.session.getDomain();
+			String cookie = this.session.getCookie();
 			if (!url.contains(domain)) {
 				int offset = requestURI.indexOf("/",
 						requestURI.indexOf("://") + 3);
