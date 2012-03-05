@@ -1,11 +1,18 @@
 package de.uxnr.ezproxy;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import de.uxnr.proxy.Headers;
 import de.uxnr.proxy.HostRewriter;
 
 public class EZProxyRewriter implements HostRewriter {
+	private static final String CONTENT_TYPE_HEADER_UPPER = "Content-Type";
+	private static final String CONTENT_TYPE_HEADER_LOWER = "Content-type";
+	private static final String COOKIE_HEADER = "Cookie";
+
 	private EZProxySession session;
 
 	public synchronized void setSession(EZProxySession session) {
@@ -27,7 +34,7 @@ public class EZProxyRewriter implements HostRewriter {
 				requestURI.insert(offset, "." + domain);
 			}
 			if (!cookie.isEmpty()) {
-				requestHeaders.add("Cookie", cookie);
+				requestHeaders.add(COOKIE_HEADER, cookie);
 			}
 		}
 
@@ -39,6 +46,15 @@ public class EZProxyRewriter implements HostRewriter {
 	public void rewriteResponse(StringBuilder requestMethod,
 			StringBuilder requestURI, Headers requestHeaders,
 			Headers responseHeaders) throws IOException {
+
+		// DIRTY HACK: Rewrite Content-type to Content-Type
+		if (responseHeaders.containsKey(CONTENT_TYPE_HEADER_LOWER)) {
+			List<String> contentTypes = responseHeaders.remove(CONTENT_TYPE_HEADER_LOWER);
+			Map<String, List<String>> contentHeaders = new HashMap<String, List<String>>();
+
+			contentHeaders.put(CONTENT_TYPE_HEADER_UPPER, contentTypes);
+			responseHeaders.putAll(contentHeaders);
+		}
 
 		System.out.println("<<< " + responseHeaders.entrySet());
 	}
