@@ -33,24 +33,18 @@ public class EZProxy {
 			proxy.addHostRewriter(".*", rewriter);
 			proxy.start();
 
-			JOptionPane.showMessageDialog(null,
-					"Proxy is running on localhost:" + session.getPort(),
-					"Proxy", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Proxy is running on localhost:" + session.getPort(), "Proxy", JOptionPane.INFORMATION_MESSAGE);
 			EZProxy.tray(proxy, session);
 		} catch (Error e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "Error",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "Exception",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Exception", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
-	private static void tray(final Proxy proxy, final EZProxySession session)
-			throws AWTException {
+	private static void tray(final Proxy proxy, final EZProxySession session) throws AWTException {
 		final SystemTray tray = SystemTray.getSystemTray();
-		final ImageIcon icon = new ImageIcon(
-				EZProxy.class.getResource("EZProxy.png"));
+		final ImageIcon icon = new ImageIcon(EZProxy.class.getResource("EZProxy.png"));
 		final TrayIcon trayIcon = new TrayIcon(icon.getImage(), "EZProxy");
 		final MenuItem exitItem = new MenuItem("Exit");
 		final PopupMenu popup = new PopupMenu();
@@ -61,8 +55,7 @@ public class EZProxy {
 				try {
 					session.end();
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, e.getMessage(),
-							"Exception", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, e.getMessage(), "Exception", JOptionPane.ERROR_MESSAGE);
 				}
 				tray.remove(trayIcon);
 				System.exit(0);

@@ -51,22 +51,18 @@ public class EZProxySession {
 			properties.setProperty("password", "");
 			properties.setProperty("domain", "ezproxy.dhbw-mannheim.de");
 			properties.setProperty("port", "12345");
-			properties.store(new FileOutputStream(config),
-					"EZProxy configuration");
+			properties.store(new FileOutputStream(config), "EZProxy configuration");
 		} else {
 			properties.load(new FileInputStream(config));
 		}
 
 		this.username = properties.getProperty("username", "");
 		this.password = properties.getProperty("password", "");
-		this.domain = properties.getProperty("domain",
-				"ezproxy.dhbw-mannheim.de");
+		this.domain = properties.getProperty("domain", "ezproxy.dhbw-mannheim.de");
 		this.port = Integer.parseInt(properties.getProperty("port", "12345"));
 
-		if (this.username.isEmpty() || this.password.isEmpty()
-				|| this.domain.isEmpty()) {
-			throw new Error(
-					"Please set username, password and domain in ezproxy.cfg");
+		if (this.username.isEmpty() || this.password.isEmpty() || this.domain.isEmpty()) {
+			throw new Error("Please set username, password and domain in ezproxy.cfg");
 		}
 	}
 
@@ -82,8 +78,7 @@ public class EZProxySession {
 			}
 		}
 
-		System.out.println("Successfully logged-in using cookie: "
-				+ this.cookie);
+		System.out.println("Successfully logged-in using cookie: " + this.cookie);
 	}
 
 	private void logout() throws IOException {
@@ -119,11 +114,8 @@ public class EZProxySession {
 		connection.setRequestProperty("Cookie", this.cookie);
 		connection.connect();
 
-		OutputStreamWriter output = new OutputStreamWriter(
-				connection.getOutputStream());
-		output.write("user=" + URLEncoder.encode(this.username, "utf-8")
-				+ "&pass=" + URLEncoder.encode(this.password, "utf-8")
-				+ "&submit=Login");
+		OutputStreamWriter output = new OutputStreamWriter(connection.getOutputStream());
+		output.write("user=" + URLEncoder.encode(this.username, "utf-8") + "&pass=" + URLEncoder.encode(this.password, "utf-8") + "&submit=Login");
 		output.flush();
 		output.close();
 

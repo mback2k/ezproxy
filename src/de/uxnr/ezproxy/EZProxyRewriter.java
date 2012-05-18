@@ -20,17 +20,14 @@ public class EZProxyRewriter implements HostRewriter {
 	}
 
 	@Override
-	public synchronized void rewriteRequest(StringBuilder requestMethod,
-			StringBuilder requestURI, Headers requestHeaders)
-			throws IOException {
+	public synchronized void rewriteRequest(StringBuilder requestMethod, StringBuilder requestURI, Headers requestHeaders) throws IOException {
 
 		if (this.session != null) {
 			String url = requestURI.toString();
 			String domain = this.session.getDomain();
 			String cookie = this.session.getCookie();
 			if (!url.contains(domain)) {
-				int offset = requestURI.indexOf("/",
-						requestURI.indexOf("://") + 3);
+				int offset = requestURI.indexOf("/", requestURI.indexOf("://") + 3);
 				requestURI.insert(offset, "." + domain);
 			}
 			if (!cookie.isEmpty()) {
@@ -43,9 +40,7 @@ public class EZProxyRewriter implements HostRewriter {
 	}
 
 	@Override
-	public void rewriteResponse(StringBuilder requestMethod,
-			StringBuilder requestURI, Headers requestHeaders,
-			Headers responseHeaders) throws IOException {
+	public void rewriteResponse(StringBuilder requestMethod, StringBuilder requestURI, Headers requestHeaders, Headers responseHeaders) throws IOException {
 
 		// DIRTY HACK: Rewrite Content-type to Content-Type
 		if (responseHeaders.containsKey(CONTENT_TYPE_HEADER_LOWER)) {
